@@ -37,3 +37,4 @@ IGV may take several minutes to run, depending on the number of input files and 
 - IGV (download script provided in `bin` directory)
 - Xvfb
 - xdpyinfo
+- Java runtime environment
