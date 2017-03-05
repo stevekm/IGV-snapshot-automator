@@ -1,11 +1,31 @@
 #/usr/bin/env python
-# python 2.7
+
+'''
+This script will load IGV in a virtual X window, load all supplied input files
+as tracks, and take snapshots at the coorindates listed in the BED formatted
+region file.
+
+If you don't have a copy of IGV, get it here:
+http://data.broadinstitute.org/igv/projects/downloads/IGV_2.3.81.zip
+
+example IGV batch script:
+
+new
+snapshotDirectory IGV_Snapshots
+load test_alignments.bam
+genome hg19
+maxPanelHeight 500
+goto chr1:713167-714758
+snapshot chr1_713167_714758_h500.png
+goto chr1:713500-714900
+snapshot chr1_713500_714900_h500.png
+exit
+'''
 
 # ~~~~ LOAD PACKAGES ~~~~~~ #
 import sys
 import os
 import errno
-import pandas as pd
 import subprocess as sp
 import argparse
 
@@ -34,9 +54,9 @@ def file_exists(myfile, kill = False):
     import os
     import sys
     if not os.path.isfile(myfile):
-        print "ERROR: File '{}' does not exist!".format(myfile)
+        print("ERROR: File '{}' does not exist!".format(myfile))
         if kill == True:
-            print "Exiting..."
+            print("Exiting...")
             sys.exit()
 
 def subprocess_cmd(command):
@@ -46,7 +66,7 @@ def subprocess_cmd(command):
     import subprocess as sp
     process = sp.Popen(command,stdout=sp.PIPE, shell=True)
     proc_stdout = process.communicate()[0].strip()
-    print proc_stdout
+    print(proc_stdout)
 
 def make_chrom_region_list(region_file):
     '''
@@ -56,8 +76,12 @@ def make_chrom_region_list(region_file):
     region_list = []
     with open(region_file) as f:
         for line in f:
-            chrom, start, stop = line.split()
-            region_list.append((chrom, start, stop))
+            if len(line.split()) == 3:
+                chrom, start, stop = line.split()
+                region_list.append((chrom, start, stop))
+            elif len(line.split()) == 2:
+                chrom, start = line.split()
+                region_list.append((chrom, start, start))
     return(region_list)
 
 def make_IGV_chrom_loc(chrom, start, stop):
@@ -126,7 +150,7 @@ def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapsho
     write out a batchscrpt for IGV
     '''
     # get the snapshot regions from the BED file
-    print("\nGetting regions from BED file\n")
+    print("\nGetting regions from BED file...\n")
     region_list = make_chrom_region_list(region_file)
     print('Read {} regions'.format(len(region_list)))
     # ~~~~ WRITE BATCHSCRIPT SETUP INFO ~~~~~~ #
@@ -168,12 +192,12 @@ def run_IGV_script(igv_script, igv_jar, memMB):
     igv_command = "(Xvfb :{} &) && DISPLAY=:{} java -Xmx{}m -jar {} -b {} && killall Xvfb".format(x_serv_port, x_serv_port, memMB, igv_jar, igv_script)
     print('\nIGV command is:\n{}\n'.format(igv_command))
     # get current time; command can take a while to finish
-    startTime = datetime.now()
+    startTime = datetime.datetime.now()
     print("\nCurrent time is:\n{}\n".format(startTime))
     # run the IGV command
     print("\nRunning the IGV command...")
     subprocess_cmd(igv_command)
-    elapsed_time = datetime.now() - startTime
+    elapsed_time = datetime.datetime.now() - startTime
     print("\nIGV finished; elapsed time is:\n{}\n".format(elapsed_time))
 
 
@@ -188,9 +212,10 @@ parser.add_argument("-r", default = 'regions.bed', type = str, dest = 'region_fi
 # optional flags
 parser.add_argument("-g", default = 'hg19', type = str, dest = 'genome', metavar = 'genome', help="Name of the reference genome, Defaults to hg19")
 parser.add_argument("-ht", default = '500', type = str, dest = 'image_height', metavar = 'image height', help="Height for the IGV tracks")
-parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directort', help="Output directory for snapshots")
+parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
 parser.add_argument("-bin", default = "bin/IGV_2.3.81/igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
 parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
+parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots")
 
 
 args = parser.parse_args()
@@ -202,6 +227,7 @@ image_height = args.image_height
 outdir = args.outdir
 igv_jar_bin = args.igv_jar_bin
 igv_mem = args.igv_mem
+no_snap = args.no_snap
 
 if __name__ == "__main__":
     # default IGV batch script output location
@@ -210,7 +236,10 @@ if __name__ == "__main__":
     # make sure the regions file exists
     file_exists(region_file, kill = True)
 
-    print('\n~~~ IGV SNAPSHOT BATCHSCRIPT AUTOMATOR ~~~\n')
+    # make sure the IGV jar exists
+    file_exists(igv_jar_bin, kill = True)
+
+    print('\n~~~ IGV SNAPSHOT AUTOMATOR ~~~\n')
     print('Reference genome:\n{}\n'.format(genome))
     print('Track height:\n{}\n'.format(image_height))
     print('IGV binary file:\n{}\n'.format(igv_jar_bin))
@@ -222,7 +251,7 @@ if __name__ == "__main__":
         print(file)
 
     # make the output directory
-    print('Making the output directory...')
+    print('\nMaking the output directory...')
     mkdir_p(outdir)
 
     # write the IGV batch script
@@ -232,4 +261,5 @@ if __name__ == "__main__":
     file_exists(batchscript_file, kill = True)
 
     # run the IGV batch script
-    run_IGV_script(igv_script = batchscript_file, igv_jar = igv_jar_bin, memMB = igv_mem)
+    if no_snap == False:
+        run_IGV_script(igv_script = batchscript_file, igv_jar = igv_jar_bin, memMB = igv_mem)
