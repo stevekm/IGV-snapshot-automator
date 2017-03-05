@@ -1,5 +1,5 @@
 # IGV_snapshot_automator
-A script to automatically create and run IGV snapshot batchscripts. This script will first write an IGV batch script for the supplied input files, then run IGV headlessly (no GUI shown) and take snapshots at the locations defined in the `regions.bed` file. 
+A script to automatically create and run (IGV snapshot batchscripts)[http://software.broadinstitute.org/software/igv/batch]. This script will first write an IGV batch script for the supplied input files, then run IGV headlessly (no GUI shown) and take snapshots at the locations defined in the `regions.bed` file. 
 
 # Usage
 Create and run batchscript:
