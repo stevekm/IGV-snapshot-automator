@@ -249,6 +249,7 @@ if __name__ == "__main__":
     print('Input files to snapshot:\n')
     for file in input_files:
         print(file)
+        file_exists(file, kill = True)
 
     # make the output directory
     print('\nMaking the output directory...')
