@@ -157,13 +157,13 @@ def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapsho
     print("\nWriting IGV batch script to file:\n{}\n".format(IGV_batchscript_file))
     # write the first line to the file; this overwrites the contents!
     initialize_file("new", IGV_batchscript_file)
+    # add the genome version
+    append_string("genome " + genome_version, IGV_batchscript_file)
     # add the snapshot dir
     append_string("snapshotDirectory " + IGV_snapshot_dir, IGV_batchscript_file)
     # add all of the input files to load as tracks
     for file in input_files:
         append_string("load " + file, IGV_batchscript_file)
-    # add the genome version
-    append_string("genome " + genome_version, IGV_batchscript_file)
     # add the track height
     append_string("maxPanelHeight " + image_height, IGV_batchscript_file)
     # ~~~~ WRITE BATCHSCRIPT CHROM LOC INFO ~~~~~~ #
