@@ -76,8 +76,8 @@ def make_chrom_region_list(region_file):
     region_list = []
     with open(region_file) as f:
         for line in f:
-            if len(line.split()) == 3:
-                chrom, start, stop = line.split()
+            if len(line.split()) >= 3:
+                chrom, start, stop = line.split()[0:3]
                 region_list.append((chrom, start, stop))
             elif len(line.split()) == 2:
                 chrom, start = line.split()
