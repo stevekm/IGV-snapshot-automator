@@ -145,6 +145,21 @@ def append_string(string, output_file):
     with open(output_file, "a") as myfile:
         myfile.write(string + '\n')
 
+def check_for_bai(bam_file):
+    '''
+    Check to make sure a 'file.bam.bai' file is present in the same dir as the 'file.bam' file
+    '''
+    file_exists(bam_file + '.bai', kill = True)
+
+def verify_input_files_list(files_list):
+    '''
+    Check to make sure input files meet criteria
+    Add more criteria as issues are found
+    '''
+    for file in files_list:
+        if file.endswith(".bam"):
+            check_for_bai(file)
+
 def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapshot_dir, genome_version, image_height):
     '''
     write out a batchscrpt for IGV
@@ -238,6 +253,9 @@ if __name__ == "__main__":
 
     # make sure the IGV jar exists
     file_exists(igv_jar_bin, kill = True)
+
+    # check the input files to make sure they are valid
+    verify_input_files_list(input_files)
 
     print('\n~~~ IGV SNAPSHOT AUTOMATOR ~~~\n')
     print('Reference genome:\n{}\n'.format(genome))
