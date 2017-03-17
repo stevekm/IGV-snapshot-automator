@@ -4,19 +4,29 @@ A script to automatically create and run [IGV snapshot batchscripts](http://soft
 Designed for use on Linux systems.
 
 # Usage
-Download a copy of IGV
+- Download a copy of IGV in the `bin` directory
 ```bash
 $ cd bin
 bin$ ./get_IGV.sh
 ```
-Create and run batchscript:
+
+- Put your chromosome regions to visualize in the `regions.bed` file (provided), or another BED format file
+
+- Locate your files to visualize (e.g. .bam & .bam.bai files)
+
+- Create and run batchscript:
 ```bash
-$ python make_IGV_snapshots.py /path/to/alignments.bam
+$ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 ```
 
-Make batchscript but don't make snapshots:
+- If you want to use regions from another BED file:
 ```bash
-$ python make_IGV_snapshots.py /path/to/alignments.bam -nosnap
+$ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -r /path/to/my_peaks.bed
+```
+
+- Or if you just want to make batchscript without taking snapshots:
+```bash
+$ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -nosnap
 ```
 
 See `python make_IGV_snapshots.py --help` for more available options
