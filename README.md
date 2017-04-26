@@ -18,13 +18,13 @@ bin$ ./get_IGV.sh
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 ```
-
-- If you want to use regions from another BED file:
+-----
+If you want to use regions from another BED file:
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -r /path/to/my_peaks.bed
 ```
 
-- Or if you just want to make batchscript without taking snapshots:
+Or if you just want to make batchscript without taking snapshots:
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -nosnap
 ```
