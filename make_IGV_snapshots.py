@@ -216,35 +216,11 @@ def run_IGV_script(igv_script, igv_jar, memMB):
     print("\nIGV finished; elapsed time is:\n{}\n".format(elapsed_time))
 
 
-# ~~~~ GET SCRIPT ARGS ~~~~~~ #
-parser = argparse.ArgumentParser(description='IGV snapshot creator.')
-# required positional args
-parser.add_argument("input_files", nargs='+', help="path to the summary samplesheet to run") # , nargs='?'
 
-# required flags
-parser.add_argument("-r", default = 'regions.bed', type = str, dest = 'region_file', metavar = 'regions', help="BED file with regions to create snapshots over")
-
-# optional flags
-parser.add_argument("-g", default = 'hg19', type = str, dest = 'genome', metavar = 'genome', help="Name of the reference genome, Defaults to hg19")
-parser.add_argument("-ht", default = '500', type = str, dest = 'image_height', metavar = 'image height', help="Height for the IGV tracks")
-parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
-parser.add_argument("-bin", default = "bin/IGV_2.3.81/igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
-parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
-parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots")
-
-
-args = parser.parse_args()
-
-input_files = args.input_files
-region_file = args.region_file
-genome = args.genome
-image_height = args.image_height
-outdir = args.outdir
-igv_jar_bin = args.igv_jar_bin
-igv_mem = args.igv_mem
-no_snap = args.no_snap
-
-if __name__ == "__main__":
+def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height = '500', outdir = 'IGV_Snapshots', igv_jar_bin = "bin/IGV_2.3.81/igv.jar", igv_mem = "4000", no_snap = False):
+    '''
+    Main control function for the script
+    '''
     # default IGV batch script output location
     batchscript_file = os.path.join(outdir, "IGV_snapshots.bat")
 
@@ -282,3 +258,41 @@ if __name__ == "__main__":
     # run the IGV batch script
     if no_snap == False:
         run_IGV_script(igv_script = batchscript_file, igv_jar = igv_jar_bin, memMB = igv_mem)
+
+def run():
+    '''
+    Parse script args to run the script
+    '''
+    # ~~~~ GET SCRIPT ARGS ~~~~~~ #
+    parser = argparse.ArgumentParser(description='IGV snapshot creator.')
+    # required positional args
+    parser.add_argument("input_files", nargs='+', help="path to the summary samplesheet to run") # , nargs='?'
+
+    # required flags
+    parser.add_argument("-r", default = 'regions.bed', type = str, dest = 'region_file', metavar = 'regions', help="BED file with regions to create snapshots over")
+
+    # optional flags
+    parser.add_argument("-g", default = 'hg19', type = str, dest = 'genome', metavar = 'genome', help="Name of the reference genome, Defaults to hg19")
+    parser.add_argument("-ht", default = '500', type = str, dest = 'image_height', metavar = 'image height', help="Height for the IGV tracks")
+    parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
+    parser.add_argument("-bin", default = "bin/IGV_2.3.81/igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
+    parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
+    parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots")
+
+    args = parser.parse_args()
+
+    input_files = args.input_files
+    region_file = args.region_file
+    genome = args.genome
+    image_height = args.image_height
+    outdir = args.outdir
+    igv_jar_bin = args.igv_jar_bin
+    igv_mem = args.igv_mem
+    no_snap = args.no_snap
+
+    main(input_files = input_files, region_file = region_file, genome = genome, image_height = image_height, outdir = outdir, igv_jar_bin = igv_jar_bin, igv_mem = igv_mem, no_snap = no_snap)
+
+
+
+if __name__ == "__main__":
+    run()
