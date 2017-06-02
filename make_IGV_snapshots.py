@@ -246,10 +246,16 @@ def run_IGV_script(igv_script, igv_jar, memMB):
 
 
 
-def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height = '500', outdir = 'IGV_Snapshots', igv_jar_bin = "bin/IGV_2.3.81/igv.jar", igv_mem = "4000", no_snap = False, suffix = None, nf4_mode = False):
+def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height = '500', outdir = 'IGV_Snapshots', igv_jar_bin = "bin/IGV_2.3.81/igv.jar", igv_mem = "4000", no_snap = False, suffix = None, nf4_mode = False, onlysnap = False):
     '''
     Main control function for the script
     '''
+    if onlysnap != False:
+        batchscript_file = str(onlysnap)
+        file_exists(batchscript_file, kill = True)
+        run_IGV_script(igv_script = batchscript_file, igv_jar = igv_jar_bin, memMB = igv_mem)
+        return()
+
     # default IGV batch script output location
     batchscript_file = os.path.join(outdir, "IGV_snapshots.bat")
 
@@ -309,6 +315,7 @@ def run():
     parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots, only write batchscript and exit")
     parser.add_argument("-suffix", default = None, dest = 'suffix', help="Filename suffix to place before '.png' in the snapshots")
     parser.add_argument("-nf4", default = False, action='store_true', dest = 'nf4_mode', help="'Name field 4' mode; uses the value in the fourth field of the regions file as the filename for each region snapshot")
+    parser.add_argument("-onlysnap", default = False, dest = 'onlysnap', help="Path to batchscript file to run in IGV. Performs no error checking or other input evaluation, only runs IGV on the batchscript and exits.")
 
     args = parser.parse_args()
 
@@ -322,8 +329,9 @@ def run():
     no_snap = args.no_snap
     suffix = args.suffix
     nf4_mode = args.nf4_mode
+    onlysnap = args.onlysnap
 
-    main(input_files = input_files, region_file = region_file, genome = genome, image_height = image_height, outdir = outdir, igv_jar_bin = igv_jar_bin, igv_mem = igv_mem, no_snap = no_snap, suffix = suffix, nf4_mode = nf4_mode)
+    main(input_files = input_files, region_file = region_file, genome = genome, image_height = image_height, outdir = outdir, igv_jar_bin = igv_jar_bin, igv_mem = igv_mem, no_snap = no_snap, suffix = suffix, nf4_mode = nf4_mode, onlysnap = onlysnap)
 
 
 
