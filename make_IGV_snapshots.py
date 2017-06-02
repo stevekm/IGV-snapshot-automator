@@ -90,11 +90,14 @@ def make_IGV_chrom_loc(chrom, start, stop):
     '''
     return('{}:{}-{}'.format(chrom, start, stop))
 
-def make_snapshot_filename(chrom, start, stop, height):
+def make_snapshot_filename(chrom, start, stop, height, suffix = None):
     '''
     formats a filename for the IGV snapshot
     '''
-    return('{}_{}_{}_h{}.png'.format(chrom, start, stop, height))
+    if suffix == None:
+        return('{}_{}_{}_h{}.png'.format(chrom, start, stop, height))
+    elif suffix != None:
+        return('{}_{}_{}_h{}{}.png'.format(chrom, start, stop, height, str(suffix)))
 
 def mkdir_p(path, return_path=False):
     '''
@@ -160,7 +163,7 @@ def verify_input_files_list(files_list):
         if file.endswith(".bam"):
             check_for_bai(file)
 
-def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapshot_dir, genome_version, image_height):
+def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapshot_dir, genome_version, image_height, suffix = None):
     '''
     write out a batchscrpt for IGV
     '''
@@ -188,7 +191,7 @@ def write_IGV_script(input_files, region_file, IGV_batchscript_file, IGV_snapsho
         # convert region into IGV script format
         IGV_loc = make_IGV_chrom_loc(chrom, start, stop)
         # create filename for output snapshot image_height
-        snapshot_filename = make_snapshot_filename(chrom, start, stop, image_height)
+        snapshot_filename = make_snapshot_filename(chrom, start, stop, image_height, suffix = suffix)
         # write to the batchscript
         append_string("goto " + IGV_loc, IGV_batchscript_file)
         append_string("snapshot " + snapshot_filename, IGV_batchscript_file)
@@ -217,7 +220,7 @@ def run_IGV_script(igv_script, igv_jar, memMB):
 
 
 
-def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height = '500', outdir = 'IGV_Snapshots', igv_jar_bin = "bin/IGV_2.3.81/igv.jar", igv_mem = "4000", no_snap = False):
+def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height = '500', outdir = 'IGV_Snapshots', igv_jar_bin = "bin/IGV_2.3.81/igv.jar", igv_mem = "4000", no_snap = False, suffix = None):
     '''
     Main control function for the script
     '''
@@ -250,7 +253,7 @@ def main(input_files, region_file = 'regions.bed', genome = 'hg19', image_height
     mkdir_p(outdir)
 
     # write the IGV batch script
-    write_IGV_script(input_files = input_files, region_file = region_file, IGV_batchscript_file = batchscript_file, IGV_snapshot_dir = outdir, genome_version = genome, image_height = image_height)
+    write_IGV_script(input_files = input_files, region_file = region_file, IGV_batchscript_file = batchscript_file, IGV_snapshot_dir = outdir, genome_version = genome, image_height = image_height, suffix = suffix)
 
     # make sure the batch script file exists
     file_exists(batchscript_file, kill = True)
@@ -278,6 +281,7 @@ def run():
     parser.add_argument("-bin", default = "bin/IGV_2.3.81/igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
     parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
     parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots")
+    parser.add_argument("-suffix", default = None, dest = 'suffix', help="Filename suffix to place before '.png' in the snapshots")
 
     args = parser.parse_args()
 
@@ -289,8 +293,9 @@ def run():
     igv_jar_bin = args.igv_jar_bin
     igv_mem = args.igv_mem
     no_snap = args.no_snap
+    suffix = args.suffix
 
-    main(input_files = input_files, region_file = region_file, genome = genome, image_height = image_height, outdir = outdir, igv_jar_bin = igv_jar_bin, igv_mem = igv_mem, no_snap = no_snap)
+    main(input_files = input_files, region_file = region_file, genome = genome, image_height = image_height, outdir = outdir, igv_jar_bin = igv_jar_bin, igv_mem = igv_mem, no_snap = no_snap, suffix = suffix)
 
 
 
