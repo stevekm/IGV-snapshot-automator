@@ -104,7 +104,7 @@ def make_snapshot_filename(region, height, suffix = None):
     '''
     if len(region) >= 4:
         chrom, start, stop, name = region[0:4]
-        return('{}.png'.format(name))
+        return('{}'.format(name)) # '{}.png'.format(name) # don't include file extension! user must do this ahead of time!
     elif len(region) == 3:
         chrom, start, stop = region
         if suffix == None:
