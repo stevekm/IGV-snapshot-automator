@@ -233,7 +233,8 @@ def run_IGV_script(igv_script, igv_jar, memMB):
     x_serv_port = get_open_X_server()
     print('\nOpen Xvfb port found on:\n{}\n'.format(x_serv_port))
     # build the system command to run IGV
-    igv_command = "(Xvfb :{} &) && DISPLAY=:{} java -Xmx{}m -jar {} -b {} && killall Xvfb".format(x_serv_port, x_serv_port, memMB, igv_jar, igv_script)
+    # igv_command = "(Xvfb :{} &) && DISPLAY=:{} java -Xmx{}m -jar {} -b {} && killall Xvfb".format(x_serv_port, x_serv_port, memMB, igv_jar, igv_script)
+    igv_command = "xvfb-run --auto-servernum --server-num=1 java -Xmx{}m -jar {} -b {}".format(memMB, igv_jar, igv_script)
     print('\nIGV command is:\n{}\n'.format(igv_command))
     # get current time; command can take a while to finish
     startTime = datetime.datetime.now()
