@@ -1,13 +1,13 @@
 # IGV Snapshot Automator
-A script to automatically create and run [IGV snapshot batchscripts](http://software.broadinstitute.org/software/igv/batch). This script will first write an IGV batch script for the supplied input files, then run IGV headlessly (no GUI shown) and take snapshots at the locations defined in the `regions.bed` file. 
+A script to automatically create and run [IGV snapshot batchscripts](http://software.broadinstitute.org/software/igv/batch). This script will first write an IGV batch script for the supplied input files, then load all supplied files for visualization (.bam, etc) in a headless IGV session and take snapshots at the locations defined in the `regions.bed` file. 
 
-Designed for use on Linux systems.
+Designed for use on Linux systems, and intended to be used as a component of sequencing analysis pipelines. 
 
 # Usage
 - Download a copy of IGV in the `bin` directory
 ```bash
 $ cd bin
-bin$ ./get_IGV.sh
+$ ./get_IGV.sh
 ```
 
 - Put your chromosome regions to visualize in the `regions.bed` file (provided), or another BED format file
@@ -18,18 +18,26 @@ bin$ ./get_IGV.sh
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 ```
------
-If you want to use regions from another BED file:
+## Options
+
+See `python make_IGV_snapshots.py --help` for available options. Here are a few:
+
+- `-r`: Path to the BED formatted regions file to use:
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -r /path/to/my_peaks.bed
 ```
 
-Or if you just want to make batchscript without taking snapshots:
+- `-nosnap`: Make batchscript without taking snapshots:
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -nosnap
 ```
+- `-g`: Genome to use, e.g. `hg19`
+- `-ht`: Height of the snapshot, default is 500
+- `-o`: Name of the output directory to save the snapshots in.
+- `-suffix`: Filename suffix to place before '.png' in the snapshots
+- `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot. 
+- `-onlysnap`: Skip batchscript creation and only run IGV using the supplied batchscript file
 
-See `python make_IGV_snapshots.py --help` for more available options
 
 # Example Output
 
