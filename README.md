@@ -4,21 +4,41 @@ A script to automatically create and run [IGV snapshot batchscripts](http://soft
 Designed for use on Linux systems, and intended to be used as a component of sequencing analysis pipelines. 
 
 # Usage
-- Download a copy of IGV in the `bin` directory
+
+## Download IGV
+
+You can use the included script in the `bin` directory to download IGV:
+
 ```bash
 $ cd bin
 $ ./get_IGV.sh
 ```
+Alternatively, a copy of IGV has been saved in the `bin` branch of this repo:
+
+```bash
+$ git checkout origin/bin bin/IGV_2.3.81.zip && unzip bin/IGV_2.3.81.zip -d bin
+```
+
+## Run Snapshotter
 
 - Put your chromosome regions to visualize in the `regions.bed` file (provided), or another BED format file
 
 - Locate your files to visualize (e.g. .bam & .bam.bai files)
 
-- Create and run batchscript:
+- Create and run batchscript. Example command:
 ```bash
 $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 ```
-## Options
+
+## Demo
+
+To run the script on the included demo files:
+
+```bash
+$ python make_IGV_snapshots.py test_alignments.bam test_alignments2.bam
+```
+
+# Options
 
 See `python make_IGV_snapshots.py --help` for available options. Here are a few:
 
@@ -34,9 +54,12 @@ $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 - `-g`: Genome to use, e.g. `hg19`
 - `-ht`: Height of the snapshot, default is 500
 - `-o`: Name of the output directory to save the snapshots in.
+- `-bin`: Path to the IGV jar binary to run 
+- `-mem`: Memory to allocate to IGV (MB)
 - `-suffix`: Filename suffix to place before '.png' in the snapshots
-- `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot. 
 - `-onlysnap`: Skip batchscript creation and only run IGV using the supplied batchscript file
+- `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot. 
+
 
 
 # Example Output
