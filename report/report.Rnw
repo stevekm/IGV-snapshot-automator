@@ -1,0 +1,20 @@
+\documentclass[multi, margin=10pt]{standalone} 
+\begin{document}
+<<start, results='asis', echo=FALSE>>=
+suppressPackageStartupMessages(library("Hmisc")) # need for latexTranslate()
+snapshot_dir <- "../IGV_Snapshots/"
+snapshot_files <- dir(snapshot_dir, pattern = '*.png', full.names = TRUE)
+
+fig_str <- "
+
+\\section{%s}
+\\begin{figure}
+\\includegraphics[width=\\textwidth, height=0.8\\textheight, keepaspectratio=true]{%s}
+\\caption{A picture of a gull.}
+\\end{figure}
+\\pagebreak
+
+"
+cat(sprintf(fig_str, latexTranslate(basename(snapshot_files)), snapshot_files))
+@
+\end{document}

@@ -1,0 +1,31 @@
+---
+title: "IGV Snapshot Report"
+author: "Stephen Kelly"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# output:
+#   html_document:
+#     toc: true
+# {.tabset .tabset-pills}
+```
+
+# Snapshots 
+
+```{r, results='asis', echo=FALSE}
+snapshot_dir <- "../IGV_Snapshots/"
+snapshot_files <- dir(snapshot_dir, pattern = '*.png', full.names = TRUE)
+
+fig_str <- "
+
+## %s
+
+![](%s)
+
+"
+
+cat(sprintf(fig_str, basename(snapshot_files), snapshot_files))
+```
