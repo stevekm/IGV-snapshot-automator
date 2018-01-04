@@ -1,6 +1,5 @@
 ---
 title: "IGV Snapshot Report"
-author: "Stephen Kelly"
 date: "`r Sys.Date()`"
 output: html_document
 ---

@@ -16,7 +16,7 @@ A PDF report can be generated using the included `report.Rnw`. Compile it with t
 This report requires LaTeX to be installed with the `standalone` package. If you are using Linux, or a Linux-style system, and you already have LaTeX installed, you can install this package with the included `Makefile` with the command:
 
 ```bash
-make
+make install
 ```
 
 ## HTML Output
