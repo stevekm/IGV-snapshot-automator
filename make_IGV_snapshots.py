@@ -328,7 +328,7 @@ def run():
     parser.add_argument("-suffix", default = None, dest = 'suffix', help="Filename suffix to place before '.png' in the snapshots")
     parser.add_argument("-nf4", default = False, action='store_true', dest = 'nf4_mode', help="'Name field 4' mode; uses the value in the fourth field of the regions file as the filename for each region snapshot")
     parser.add_argument("-onlysnap", default = False, dest = 'onlysnap', help="Path to batchscript file to run in IGV. Performs no error checking or other input evaluation, only runs IGV on the batchscript and exits.")
-    parser.add_argument("-group_by_strand", default=False,
+    parser.add_argument("-s", "-group_by_strand", default=False,
                         dest="group_by_strand", action='store_true',
                         help="Group reads by forward/reverse strand.")
 
