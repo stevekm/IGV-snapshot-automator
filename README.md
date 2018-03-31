@@ -35,7 +35,7 @@ $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 To run the script on the included demo files:
 
 ```bash
-$ python make_IGV_snapshots.py test_alignments.bam test_alignments2.bam
+$ python make_IGV_snapshots.py test_data/test_alignments.bam test_data/test_alignments2.bam
 ```
 
 # Options
@@ -59,6 +59,7 @@ $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 - `-suffix`: Filename suffix to place before '.png' in the snapshots
 - `-onlysnap`: Skip batchscript creation and only run IGV using the supplied batchscript file
 - `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot. 
+- `-s` or `-group_by_strand`: Group alignment(s) by read strand with forward on top and reverse on the bottom.
 
 
 
