@@ -1,4 +1,4 @@
-#/usr/bin/env python
+#!/usr/bin/env python
 
 '''
 This script will load IGV in a virtual X window, load all supplied input files
