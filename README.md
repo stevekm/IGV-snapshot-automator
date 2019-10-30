@@ -1,7 +1,7 @@
 # IGV Snapshot Automator
-A script to automatically create and run [IGV snapshot batchscripts](http://software.broadinstitute.org/software/igv/batch). This script will first write an IGV batch script for the supplied input files, then load all supplied files for visualization (.bam, etc) in a headless IGV session and take snapshots at the locations defined in the `regions.bed` file. 
+A script to automatically create and run [IGV snapshot batchscripts](http://software.broadinstitute.org/software/igv/batch). This script will first write an IGV batch script for the supplied input files, then load all supplied files for visualization (.bam, etc) in a headless IGV session and take snapshots at the locations defined in the `regions.bed` file.
 
-Designed for use on Linux systems, and intended to be used as a component of sequencing analysis pipelines. 
+Designed for use on Linux systems, and intended to be used as a component of sequencing analysis pipelines.
 
 # Usage
 
@@ -54,11 +54,11 @@ $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 - `-g`: Genome to use, e.g. `hg19`
 - `-ht`: Height of the snapshot, default is 500
 - `-o`: Name of the output directory to save the snapshots in.
-- `-bin`: Path to the IGV jar binary to run 
+- `-bin`: Path to the IGV jar binary to run
 - `-mem`: Memory to allocate to IGV (MB)
 - `-suffix`: Filename suffix to place before '.png' in the snapshots
 - `-onlysnap`: Skip batchscript creation and only run IGV using the supplied batchscript file
-- `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot. 
+- `-nf4`: "Name field 4" mode, uses values saved in 4th field of the `regions.bed` file as the output filename of the PNG snapshot. Use this when you have pre-made filenames you wish to use for each snapshot.
 - `-s` or `-group_by_strand`: Group alignment(s) by read strand with forward on top and reverse on the bottom.
 
 
@@ -69,9 +69,23 @@ $ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam
 
 # Notes
 
-Default memory allotment is set at 4GB; this can be changed with the `-mem` argument (e.g. `-mem 1000` sets memory to 1GB). 
+Default memory allotment is set at 4GB; this can be changed with the `-mem` argument (e.g. `-mem 1000` sets memory to 1GB).
 
-IGV may take several minutes to run, depending on the number of input files and regions to snapshot. Stdout messages from the program may not appear immediately in the console. 
+IGV may take several minutes to run, depending on the number of input files and regions to snapshot. Stdout messages from the program may not appear immediately in the console.
+
+# Singularity Container
+
+An example Singularity container recipe file to run the IGV Snapshot Automator script is included (`Singularity`). If you have Singularity installed, it can be built with a command such as:
+
+```
+sudo singularity build IGV.simg Singularity
+```
+
+If you do not have root access or do not have Singularity installed on your system, you can refer to the repo [here](https://github.com/NYU-Molecular-Pathology/containers) for some examples of how to build Singularity containers using Vagrant or Docker.
+
+An example wrapper script that can be used to launch the Singularity container and run the IGV Snapshot Automator can be found in `run.Singularity.sh`. You should update this with the commands you wish to use and make necessary changes to it in order to run on your system.
+
+Tested with Singularity 2.4 and 2.5.2.
 
 # Software Requirements
 - Python 2.7 or 3+
