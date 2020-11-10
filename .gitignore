@@ -91,3 +91,4 @@ IGV_Snapshots*
 bin*
 test.py
 target.bed
+*.sif

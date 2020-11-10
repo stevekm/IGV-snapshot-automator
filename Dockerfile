@@ -1,8 +1,4 @@
 # Docker container with the dependencies needed to run the IGV snapshot automator
-
-# commands to build and use container;
-# $ docker build -t "stevekm/igv-snapshot-automator" .
-# $ docker run --rm -ti -v $PWD:/data/ "stevekm/igv-snapshot-automator" bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /data/snapshots -r /IGV-snapshot-automator/regions.bed -bin /IGV-snapshot-automator/igv.jar'
 FROM ubuntu:16.04
 
 MAINTAINER Stephen M. Kelly
