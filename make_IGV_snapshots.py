@@ -30,23 +30,6 @@ import subprocess as sp
 import argparse
 
 # ~~~~ CUSTOM FUNCTIONS ~~~~~~ #
-def my_debugger(vars):
-    '''
-    starts interactive Python terminal at location in script
-    very handy for debugging
-    call this function with
-    my_debugger(globals().copy())
-    anywhere in the body of the script, or
-    my_debugger(locals().copy())
-    within a script function
-    '''
-    import readline # optional, will allow Up/Down/History in the console
-    import code
-    # vars = globals().copy() # in python "global" variables are actually module-level
-    vars.update(locals())
-    shell = code.InteractiveConsole(vars)
-    shell.interact()
-
 def file_exists(myfile, kill = False):
     '''
     Checks to make sure a file exists, optionally kills the script
@@ -322,7 +305,7 @@ def run():
     parser.add_argument("-g", default = 'hg19', type = str, dest = 'genome', metavar = 'genome', help="Name of the reference genome, Defaults to hg19")
     parser.add_argument("-ht", default = '500', type = str, dest = 'image_height', metavar = 'image height', help="Height for the IGV tracks")
     parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
-    parser.add_argument("-bin", default = "bin/IGV_2.3.81/igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
+    parser.add_argument("-bin", default = "igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
     parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
     parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots, only write batchscript and exit")
     parser.add_argument("-suffix", default = None, dest = 'suffix', help="Filename suffix to place before '.png' in the snapshots")
