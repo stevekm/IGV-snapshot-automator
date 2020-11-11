@@ -18,14 +18,14 @@ docker-build:
 	docker build -t "$(DOCKER_TAG)" .
 
 # run the script on the test data inside the docker container
-# uses default paths for regions.bed and igv.jar
-# NOTE: use stevekm/igv-snapshot-automator:latest to pull from Dockerhub
 docker-test:
 	docker run \
 	--rm -ti \
-	-v $$PWD:/host/ \
-	"$(DOCKER_TAG)" \
-	bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots'
+	-v $$PWD:$$PWD \
+	"$(DOCKER_TAG):latest" \
+	$$PWD/test_data/test_alignments.bam \
+	-r $$PWD/regions.bed \
+	-o $$PWD/snapshots
 
 # build the Singularity container using Docker
 # bind the current directory (project root dir) into the container as /host
