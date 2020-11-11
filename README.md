@@ -108,3 +108,7 @@ Some alternative implementations of the same basic methodology used here for cre
 - https://github.com/stevekm/IGV-snapshot-nf
 
 - https://github.com/NYU-Molecular-Pathology/NGS580-nf/blob/3ba2f970c3fbee56080ba60727f7bf43cb1be3b2/main.nf#L4701-L4876
+
+Details on interpretation of IGV visualizations can be found here:
+
+- https://software.broadinstitute.org/software/igv/book/export/html/37
