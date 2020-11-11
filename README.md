@@ -36,19 +36,12 @@ $ python make_IGV_snapshots.py test_data/test_alignments.bam test_data/test_alig
 
 See `python make_IGV_snapshots.py --help` for available options. Here are a few:
 
-- `-r`: Path to the BED formatted regions file to use:
-```bash
-$ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -r /path/to/my_peaks.bed
-```
-
-- `-nosnap`: Make batchscript without taking snapshots:
-```bash
-$ python make_IGV_snapshots.py /path/to/alignments1.bam /path/to/alignments2.bam -nosnap
-```
+- `-r`: Path to the BED formatted regions file to use (defaults to the included demo `regions.bed`)
+- `-nosnap`: Make batchscript without taking snapshots
 - `-g`: Genome to use, e.g. `hg19`
 - `-ht`: Height of the snapshot, default is 500
-- `-o`: Name of the output directory to save the snapshots in.
-- `-bin`: Path to the IGV jar binary to run
+- `-o`: Name of the output directory to save the snapshots in (defaults to `IGV_Snapshots`)
+- `-bin`: Path to the IGV jar binary to run (defaults to `igv.jar`)
 - `-mem`: Memory to allocate to IGV (MB)
 - `-suffix`: Filename suffix to place before '.png' in the snapshots
 - `-onlysnap`: Skip batchscript creation and only run IGV using the supplied batchscript file
