@@ -100,3 +100,11 @@ make singularity-test
 - xdpyinfo
 - Java runtime environment
 - Docker or Singularity for building and running containers
+
+# Notes
+
+Some alternative implementations of the same basic methodology used here for creating IGV snapshots can also be found implemented in Nextflow pipelines;
+
+- https://github.com/stevekm/IGV-snapshot-nf
+
+- https://github.com/NYU-Molecular-Pathology/NGS580-nf/blob/3ba2f970c3fbee56080ba60727f7bf43cb1be3b2/main.nf#L4701-L4876
