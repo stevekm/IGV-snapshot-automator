@@ -62,7 +62,7 @@ IGV may take several minutes to run, depending on the number of input files and 
 
 # Containers
 
-Docker and Singularity container files are included.
+Docker and Singularity container files are included. Pre built container images can be found on Dockerhub at https://hub.docker.com/repository/docker/stevekm/igv-snapshot-automator
 
 ## Docker
 
