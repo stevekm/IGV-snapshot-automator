@@ -21,10 +21,33 @@ docker-test:
 
 
 # build the Singularity container using Docker
+# bind the current directory (project root dir) into the container as /host
+# outputs the container file `make_IGV_snapshots.sif` in the current directory
+# NOTE: singularityware/singularity:v3.3.0 has `singularity` as the entrypoint
 singularity-build:
 	docker run --privileged --rm -ti \
-	-v $$PWD:$$PWD \
+	-v $$PWD:/host \
 	singularityware/singularity:v3.3.0 \
 	build \
-	$$PWD/make_IGV_snapshots.sif \
-	$$PWD/make_IGV_snapshots.def
+	/host/make_IGV_snapshots.sif \
+	/host/make_IGV_snapshots.def
+
+# recipe to shell into the singularity container with Docker
+singularity-shell:
+	docker run --privileged --rm -ti \
+	-v $$PWD:/host \
+	singularityware/singularity:v3.3.0 \
+	shell \
+	/host/make_IGV_snapshots.sif
+
+# run the script on the test data inside the Singularity container using Docker
+singularity-test:
+	docker run \
+	--privileged \
+	--rm -ti \
+	-v $$PWD:/host \
+	singularityware/singularity:v3.3.0 \
+	run \
+	-B /host:/host \
+	/host/make_IGV_snapshots.sif \
+	bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots -r /IGV-snapshot-automator/regions.bed -bin /IGV-snapshot-automator/igv.jar'
