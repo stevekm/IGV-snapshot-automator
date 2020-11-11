@@ -7,16 +7,10 @@ Designed for use on Linux systems, and intended to be used as a component of seq
 
 ## Download IGV
 
-You can use the included script in the `bin` directory to download IGV:
+Use the included Makefile recipe to download a copy of IGV
 
-```bash
-$ cd bin
-$ ./get_IGV.sh
 ```
-Alternatively, a copy of IGV has been saved in the `bin` branch of this repo:
-
-```bash
-$ git checkout origin/bin bin/IGV_2.3.81.zip && unzip bin/IGV_2.3.81.zip -d bin
+make install
 ```
 
 ## Run Snapshotter
@@ -73,19 +67,37 @@ Default memory allotment is set at 4GB; this can be changed with the `-mem` argu
 
 IGV may take several minutes to run, depending on the number of input files and regions to snapshot. Stdout messages from the program may not appear immediately in the console.
 
-# Singularity Container
+# Containers
 
-An example Singularity container recipe file to run the IGV Snapshot Automator script is included (`Singularity`). If you have Singularity installed, it can be built with a command such as:
+Docker and Singularity container files are included.
+
+## Docker
+
+The Docker container can be built with the included Makefile recipe
 
 ```
-sudo singularity build IGV.simg Singularity
+make docker-build
 ```
 
-If you do not have root access or do not have Singularity installed on your system, you can refer to the repo [here](https://github.com/NYU-Molecular-Pathology/containers) for some examples of how to build Singularity containers using Vagrant or Docker.
+The test data can be run with
 
-An example wrapper script that can be used to launch the Singularity container and run the IGV Snapshot Automator can be found in `run.Singularity.sh`. You should update this with the commands you wish to use and make necessary changes to it in order to run on your system.
+```
+make docker-test
+```
 
-Tested with Singularity 2.4 and 2.5.2.
+## Singularity
+
+The Singularity container can be built using Docker with the included Makefile recipe
+
+```
+make singularity-build
+```
+
+The test data can be run with
+
+```
+make singularity-test
+```
 
 # Software Requirements
 - Python 2.7 or 3+
@@ -94,3 +106,4 @@ Tested with Singularity 2.4 and 2.5.2.
 - Xvfb
 - xdpyinfo
 - Java runtime environment
+- Docker or Singularity for building and running containers
