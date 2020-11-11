@@ -1,0 +1,6 @@
+*.sif
+.dockerignore
+IGV_2.4.10/
+*.zip
+igv.jar
+snapshots/

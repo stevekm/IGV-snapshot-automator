@@ -17,9 +17,9 @@ ADD . /IGV-snapshot-automator
 ENV PATH="/IGV-snapshot-automator/:/IGV-snapshot-automator/IGV_2.4.10/:${PATH}"
 
 # install IGV via the Makefile
-RUN cd /IGV-snapshot-automator && make install
-
-# make a dummy batch script in order to load the hg19 genome into the container
+# then make a dummy batch script in order to load the hg19 genome into the container
 # https://software.broadinstitute.org/software/igv/PortCommands
-RUN printf 'new\ngenome hg19\nexit\n' > /genome.bat
-RUN xvfb-run --auto-servernum --server-num=1 igv.sh -b /genome.bat
+RUN cd /IGV-snapshot-automator && \
+    make install && \
+    printf 'new\ngenome hg19\nexit\n' > /genome.bat && \
+    xvfb-run --auto-servernum --server-num=1 igv.sh -b /genome.bat

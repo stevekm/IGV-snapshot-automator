@@ -92,3 +92,4 @@ bin*
 test.py
 target.bed
 *.sif
+snapshots/
