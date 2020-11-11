@@ -29,6 +29,10 @@ import errno
 import subprocess as sp
 import argparse
 
+THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+default_igv_jar = os.path.join(THIS_DIR, 'igv.jar')
+default_output_dir = os.path.join(THIS_DIR, "IGV_Snapshots")
+default_regions_bed = os.path.join(THIS_DIR, 'regions.bed')
 # ~~~~ CUSTOM FUNCTIONS ~~~~~~ #
 def file_exists(myfile, kill = False):
     '''
@@ -296,16 +300,16 @@ def run():
     # ~~~~ GET SCRIPT ARGS ~~~~~~ #
     parser = argparse.ArgumentParser(description='IGV snapshot automator')
     # required positional args
-    parser.add_argument("input_files", nargs='+', help="pathes to the files to create snapshots from e.g. .bam, .bigwig, etc.") # , nargs='?'
+    parser.add_argument("input_files", nargs='+', help="paths to the files to create snapshots from e.g. .bam, .bigwig, etc.") # , nargs='?'
 
     # required flags
-    parser.add_argument("-r", default = 'regions.bed', type = str, dest = 'region_file', metavar = 'regions', help="BED file with regions to create snapshots over")
+    parser.add_argument("-r", default = default_regions_bed, type = str, dest = 'region_file', metavar = 'regions', help="BED file with regions to create snapshots over")
 
     # optional flags
     parser.add_argument("-g", default = 'hg19', type = str, dest = 'genome', metavar = 'genome', help="Name of the reference genome, Defaults to hg19")
     parser.add_argument("-ht", default = '500', type = str, dest = 'image_height', metavar = 'image height', help="Height for the IGV tracks")
-    parser.add_argument("-o", default = 'IGV_Snapshots', type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
-    parser.add_argument("-bin", default = "igv.jar", type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
+    parser.add_argument("-o", default = default_output_dir, type = str, dest = 'outdir', metavar = 'output directory', help="Output directory for snapshots")
+    parser.add_argument("-bin", default = default_igv_jar, type = str, dest = 'igv_jar_bin', metavar = 'IGV bin path', help="Path to the IGV jar binary to run")
     parser.add_argument("-mem", default = "4000", type = str, dest = 'igv_mem', metavar = 'IGV memory (MB)', help="Amount of memory to allocate to IGV, in Megabytes (MB)")
     parser.add_argument("-nosnap", default = False, action='store_true', dest = 'no_snap', help="Don't make snapshots, only write batchscript and exit")
     parser.add_argument("-suffix", default = None, dest = 'suffix', help="Filename suffix to place before '.png' in the snapshots")

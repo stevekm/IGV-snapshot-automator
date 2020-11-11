@@ -16,8 +16,9 @@ docker-build:
 	docker build -t "stevekm/igv-snapshot-automator" .
 
 # run the script on the test data inside the docker container
+# uses default paths for regions.bed and igv.jar
 docker-test:
-	docker run --rm -ti -v $PWD:/data/ "stevekm/igv-snapshot-automator" bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /data/snapshots -r /IGV-snapshot-automator/regions.bed -bin /IGV-snapshot-automator/igv.jar'
+	docker run --rm -ti -v $$PWD:/host/ "stevekm/igv-snapshot-automator" bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots'
 
 
 # build the Singularity container using Docker
@@ -41,6 +42,7 @@ singularity-shell:
 	/host/make_IGV_snapshots.sif
 
 # run the script on the test data inside the Singularity container using Docker
+# uses default paths for regions.bed and igv.jar
 singularity-test:
 	docker run \
 	--privileged \
@@ -50,4 +52,4 @@ singularity-test:
 	run \
 	-B /host:/host \
 	/host/make_IGV_snapshots.sif \
-	bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots -r /IGV-snapshot-automator/regions.bed -bin /IGV-snapshot-automator/igv.jar'
+	bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots'
