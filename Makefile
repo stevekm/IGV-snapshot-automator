@@ -3,6 +3,7 @@ install: igv.jar
 
 igv.jar: IGV_2.4.10.zip
 	unzip IGV_2.4.10.zip && \
+	rm -f IGV_2.4.10.zip && \
 	ln -s IGV_2.4.10/igv.jar
 
 IGV_2.4.10.zip:
@@ -11,15 +12,20 @@ IGV_2.4.10.zip:
 .INTERMEDIATE: tmp
 
 
-# build the Docker container
+# build the Docker container from the current repo dir
+DOCKER_TAG:=stevekm/igv-snapshot-automator
 docker-build:
-	docker build -t "stevekm/igv-snapshot-automator" .
+	docker build -t "$(DOCKER_TAG)" .
 
 # run the script on the test data inside the docker container
 # uses default paths for regions.bed and igv.jar
+# NOTE: use stevekm/igv-snapshot-automator:latest to pull from Dockerhub
 docker-test:
-	docker run --rm -ti -v $$PWD:/host/ "stevekm/igv-snapshot-automator" bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots'
-
+	docker run \
+	--rm -ti \
+	-v $$PWD:/host/ \
+	"$(DOCKER_TAG)" \
+	bash -c 'make_IGV_snapshots.py /IGV-snapshot-automator/test_data/test_alignments.bam -o /host/snapshots'
 
 # build the Singularity container using Docker
 # bind the current directory (project root dir) into the container as /host
