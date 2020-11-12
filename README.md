@@ -119,6 +119,10 @@ Details on interpretation of IGV visualizations can be found here:
 
 - https://software.broadinstitute.org/software/igv/book/export/html/37
 
-IGV available preferences:
+IGV available preferences which could be included in IGV batch scripts:
 
 - https://software.broadinstitute.org/software/igv/prefs.properties
+
+`igv-reports` which makes HTML report outputs with embedded Javascript IGV viewer
+
+- https://github.com/igvteam/igv-reports
