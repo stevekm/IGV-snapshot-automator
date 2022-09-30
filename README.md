@@ -1,3 +1,17 @@
+#### NOTE
+
+I recommed checking out https://github.com/igvteam/igv-reports which has more features and active development before attempting to use this IGV-snapshot-automator. 
+
+The features of this automator are entirely limited to commands that can be used in IGV batch script;
+
+- https://github.com/igvteam/igv/wiki/Batch-commands
+
+- https://software.broadinstitute.org/software/igv/batch
+
+- https://software.broadinstitute.org/software/igv/PortCommands
+
+-----
+
 # IGV Snapshot Automator
 A script to automatically create and run [IGV snapshot batchscripts](http://software.broadinstitute.org/software/igv/batch). This script will first write an IGV batch script for the supplied input files, then load all supplied files for visualization (.bam, etc) in a headless IGV session and take snapshots at the locations defined in the `regions.bed` file.
 
