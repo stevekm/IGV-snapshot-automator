@@ -1,14 +1,17 @@
 #### NOTE
 
-I recommed checking out https://github.com/igvteam/igv-reports which has more features and active development before attempting to use this IGV-snapshot-automator. 
+I recommed checking out [`igv-reports`](https://github.com/igvteam/igv-reports) which has more features and active development before attempting to use this IGV-snapshot-automator. 
 
-The features of this automator are entirely limited to commands that can be used in IGV batch script;
+Also check out [BamSnap](https://bamsnap.readthedocs.io/en/latest/) for IGV-like bam file visualization; https://github.com/parklab/bamsnap 
+
+The features of this `IGV-snapshot-automator` are entirely limited to commands that can be used in IGV batch script;
 
 - https://github.com/igvteam/igv/wiki/Batch-commands
 
 - https://software.broadinstitute.org/software/igv/batch
 
 - https://software.broadinstitute.org/software/igv/PortCommands
+
 
 -----
 
